@@ -28,6 +28,9 @@ repositories {
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
+	compileOnly("org.springframework.boot:spring-boot-starter-tomcat")
 	compile('org.springframework.boot:spring-boot-starter-aop')
+	compile("io.netty:netty-all:4.1.6.Final")
+	
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
