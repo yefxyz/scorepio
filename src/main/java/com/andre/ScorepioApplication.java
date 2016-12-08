@@ -5,30 +5,31 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.andre.netty.DiscardServer;
+import com.andre.netty.NettyTestServer;
 
 @RestController
 @SpringBootApplication
 public class ScorepioApplication {
 
-	private static DiscardServer discardServer;
-	
+	private static NettyTestServer nettyTestServer;
+
 	@Autowired
-	public void setDiscardServer(DiscardServer discardServer) {
-		ScorepioApplication.discardServer = discardServer;
+	public void setDiscardServer(NettyTestServer nettyTestServer) {
+		ScorepioApplication.nettyTestServer = nettyTestServer;
 	}
-	
-//	@RequestMapping("/")
-//	String home() {
-//		return "Hello World!";
-//	}
+
+	// @RequestMapping("/")
+	// String home() {
+	// return "Hello World!";
+	// }
 
 	public static void main(String[] args) {
 		SpringApplication app = new SpringApplication(ScorepioApplication.class);
 		app.setWebEnvironment(false);
 		app.run(args);
+
 		try {
-			discardServer.run();
+			nettyTestServer.run();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

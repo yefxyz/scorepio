@@ -13,19 +13,22 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
-/**
- * Discards any incoming data.
- */
 @Service
-public class DiscardServer {
+public class NettyTestServer {
 
 	private final int port;
-	
+
+	/**
+	 * Discards any incoming data.
+	 */
 	@Autowired
 	private DiscardServerHandler discardServerHandler;
 
 	@Autowired
-	public DiscardServer(@Value("${server.port}") final int port) {
+	private TimeServerHandler timeServerHandler;
+
+	@Autowired
+	public NettyTestServer(@Value("${server.port}") final int port) {
 		this.port = port;
 	}
 
@@ -38,7 +41,7 @@ public class DiscardServer {
 					.childHandler(new ChannelInitializer<SocketChannel>() { // (4)
 						@Override
 						public void initChannel(SocketChannel ch) throws Exception {
-							ch.pipeline().addLast(discardServerHandler);
+							ch.pipeline().addLast(timeServerHandler);
 						}
 					}).option(ChannelOption.SO_BACKLOG, 128)          // (5)
 					.childOption(ChannelOption.SO_KEEPALIVE, true); // (6)
@@ -56,13 +59,4 @@ public class DiscardServer {
 		}
 	}
 
-	public static void main(String[] args) throws Exception {
-		int port;
-		if (args.length > 0) {
-			port = Integer.parseInt(args[0]);
-		} else {
-			port = 8080;
-		}
-		new DiscardServer(port).run();
-	}
 }
