@@ -41,7 +41,7 @@ public class NettyTestServer {
 					.childHandler(new ChannelInitializer<SocketChannel>() { // (4)
 						@Override
 						public void initChannel(SocketChannel ch) throws Exception {
-							ch.pipeline().addLast(timeServerHandler);
+							ch.pipeline().addLast(discardServerHandler);
 						}
 					}).option(ChannelOption.SO_BACKLOG, 128)          // (5)
 					.childOption(ChannelOption.SO_KEEPALIVE, true); // (6)

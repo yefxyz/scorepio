@@ -12,7 +12,7 @@ import com.andre.netty.NettyTestServer;
 public class ScorepioApplication {
 
 	private static NettyTestServer nettyTestServer;
-
+	
 	@Autowired
 	public void setDiscardServer(NettyTestServer nettyTestServer) {
 		ScorepioApplication.nettyTestServer = nettyTestServer;
