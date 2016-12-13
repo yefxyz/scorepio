@@ -22,7 +22,7 @@ public class ScorepioApplicationTests {
 
 	@Test
 	public void testRedis() {
-		User user01 = new User(123_456_789L, "test01");
+		User user01 = new User(123_456_789L, "test01", "123456");
 		redisUserTemplate.opsForValue().set(user01.getId().toString(), user01);
 
 		System.out.println(redisUserTemplate.opsForValue().get(user01.getId().toString()).getUsername());
