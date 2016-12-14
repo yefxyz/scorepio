@@ -1,4 +1,4 @@
-package com.andre.core.repository;
+package com.andre.core.repository.jpa;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

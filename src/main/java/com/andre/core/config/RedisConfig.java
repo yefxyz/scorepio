@@ -7,8 +7,11 @@ import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+import com.andre.core.CoreConstants;
+import com.andre.core.model.BaseObject;
 import com.andre.core.model.User;
-import com.andre.redis.RedisObjectSerializer;
+import com.andre.core.repository.redis.GsonRedisSerializer;
+import com.andre.core.repository.redis.ObjectRedisSerializer;
 
 @Configuration
 public class RedisConfig {
@@ -19,11 +22,37 @@ public class RedisConfig {
 	}
 
 	@Bean
+	StringRedisSerializer stringRedisSerializer() {
+		return new StringRedisSerializer(CoreConstants.CHARSET_UTF_8);
+	}
+
+	@Bean
+	ObjectRedisSerializer objectRedisSerializer() {
+		return new ObjectRedisSerializer();
+	}
+	
+	@Bean
+	<T extends BaseObject> GsonRedisSerializer<T> gsonRedisSerializer() {
+		return new GsonRedisSerializer<>();
+	}
+
+	@Bean
 	public RedisTemplate<String, User> redisUserTemplate(RedisConnectionFactory factory) {
 		RedisTemplate<String, User> template = new RedisTemplate<String, User>();
 		template.setConnectionFactory(jedisConnectionFactory());
-		template.setKeySerializer(new StringRedisSerializer());
-		template.setValueSerializer(new RedisObjectSerializer());
+		template.setKeySerializer(stringRedisSerializer());
+		template.setValueSerializer(objectRedisSerializer());
+		return template;
+	}
+
+	@Bean
+	public <T extends BaseObject> RedisTemplate<String, T> redisBaseObjectTemplate(RedisConnectionFactory factory) {
+		RedisTemplate<String, T> template = new RedisTemplate<>();
+		template.setConnectionFactory(jedisConnectionFactory());
+		template.setKeySerializer(stringRedisSerializer());
+		template.setValueSerializer(gsonRedisSerializer());
+		template.setHashKeySerializer(stringRedisSerializer());
+		template.setHashValueSerializer(gsonRedisSerializer());
 		return template;
 	}
 

@@ -1,5 +1,7 @@
 package com.andre;
 
+import javax.annotation.Resource;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,14 +11,17 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.andre.core.model.User;
-import com.andre.core.repository.UserRepository;
+import com.andre.core.repository.jpa.UserRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ScorepioApplicationTests {
 
-	@Autowired
+	@Resource
 	private RedisTemplate<String, User> redisUserTemplate;
+
+	@Resource
+	private RedisTemplate<String, User> redisBaseObjectTemplate;
 
 	@Autowired
 	private UserRepository userRepository;
@@ -28,12 +33,13 @@ public class ScorepioApplicationTests {
 	@Test
 	public void testRedis() {
 		User user01 = new User("test01", "123456");
-		redisUserTemplate.opsForValue().set(user01.getUsername(), user01);
-
-		System.out.println(redisUserTemplate.opsForValue().get(user01.getUsername()));
+		// redisUserTemplate.opsForValue().set(user01.getUsername(), user01);
+		// System.out.println(redisUserTemplate.opsForValue().get(user01.getUsername()));
+		redisBaseObjectTemplate.opsForValue().set(user01.getUsername(), user01);
+		System.out.println(redisBaseObjectTemplate.opsForValue().get(user01.getUsername()));
 	}
 
-	@Test
+	// @Test
 	public void testJPA() {
 		// 当首次测试，创建10条记录。
 		// userRepository.save(new User("AAA", "123456"));

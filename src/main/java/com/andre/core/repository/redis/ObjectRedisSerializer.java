@@ -1,4 +1,4 @@
-package com.andre.redis;
+package com.andre.core.repository.redis;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.serializer.support.DeserializingConverter;
@@ -6,9 +6,7 @@ import org.springframework.core.serializer.support.SerializingConverter;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.SerializationException;
 
-import com.andre.core.model.DataObject;
-
-public class RedisObjectSerializer implements RedisSerializer<DataObject> {
+public class ObjectRedisSerializer implements RedisSerializer<Object> {
 
 	private Converter<Object, byte[]> serializer = new SerializingConverter();
 	private Converter<byte[], Object> deserializer = new DeserializingConverter();
@@ -16,7 +14,7 @@ public class RedisObjectSerializer implements RedisSerializer<DataObject> {
 	private final static byte[] emptyBytes = new byte[0];
 
 	@Override
-	public byte[] serialize(DataObject obj) throws SerializationException {
+	public byte[] serialize(Object obj) throws SerializationException {
 		if (obj == null) {
 			return emptyBytes;
 		}
@@ -29,12 +27,12 @@ public class RedisObjectSerializer implements RedisSerializer<DataObject> {
 	}
 
 	@Override
-	public DataObject deserialize(byte[] bytes) throws SerializationException {
+	public Object deserialize(byte[] bytes) throws SerializationException {
 		if (bytes == null || bytes.length == 0) {
 			return null;
 		}
 		try {
-			return (DataObject) deserializer.convert(bytes);
+			return deserializer.convert(bytes);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			throw new SerializationException("Cannot deserialize", ex);
