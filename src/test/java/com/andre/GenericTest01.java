@@ -6,13 +6,13 @@ import java.util.Arrays;
 
 import com.andre.core.model.BaseObject;
 
-public class GenericTest<K, V> {
+public class GenericTest01<K, V> {
 
 	public static void main(String[] args) {
 		// 匿名内部类。
-		GenericTest<String, BaseObject> test1 = new GenericTest<String, BaseObject>() {
+		GenericTest01<String, BaseObject> test1 = new GenericTest01<String, BaseObject>() {
 		};
-		GenericTest<String, BaseObject> test2 = new GenericTest<>();
+		GenericTest01<String, BaseObject> test2 = new GenericTest01<>();
 
 		Type type1 = test1.getClass().getGenericSuperclass();
 		System.out.println("type1: " + type1);

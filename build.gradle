@@ -38,7 +38,9 @@ dependencies {
 	compile("mysql:mysql-connector-java:6.0.5")
 	compile("org.springframework.data:spring-data-redis:1.7.5.RELEASE")
 	compile("redis.clients:jedis:2.9.0")
+	
 	compile("com.google.code.gson:gson:2.8.0")
+	compile("com.google.guava:guava:20.0")
 	
 	testCompile("org.springframework.boot:spring-boot-starter-test")
 }
