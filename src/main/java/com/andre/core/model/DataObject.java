@@ -1,26 +1,37 @@
 package com.andre.core.model;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Version;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import com.andre.core.CoreConstants;
+
 /**
  * 基础数据对象。
  * 
  * @author Andre
  * @version $Revision: 1.19 $ $Author: hyb $ $Date: 2011/06/01 20:51:36 $
  */
+@MappedSuperclass
 public abstract class DataObject extends BaseObject {
 
 	private static final long serialVersionUID = -8474348103484447819L;
 
 	private static final long defaultID = -9999;
 
-	private String objKey;
+	/**
+	 * 主键ID。
+	 */
+	@Id
+	@GeneratedValue(generator = "clockSeq")
+	@GenericGenerator(name = "clockSeq", strategy = CoreConstants.ID_GENERATOR_CLASS)
+	protected Long id;
 
-	public String getObjKey() {
-		return objKey;
-	}
-
-	public void setObjKey(String objKey) {
-		this.objKey = objKey;
-	}
+	@Version
+	protected Integer version;
 
 	public Long getId() {
 		return defaultID;

@@ -1,4 +1,4 @@
-package com.andre.redis;
+package com.andre.core.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,6 +8,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import com.andre.core.model.User;
+import com.andre.redis.RedisObjectSerializer;
 
 @Configuration
 public class RedisConfig {

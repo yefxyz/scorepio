@@ -1,20 +1,11 @@
 package com.andre.core.model;
 
-import java.io.Serializable;
-
-import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Version;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.OptimisticLockType;
 import org.hibernate.annotations.OptimisticLocking;
 import org.hibernate.annotations.Polymorphism;
@@ -35,22 +26,9 @@ import com.andre.core.CoreConstants;
 @DynamicUpdate
 @OptimisticLocking(type = OptimisticLockType.VERSION)
 @Polymorphism(type = PolymorphismType.EXPLICIT)
-@Cacheable
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class User extends DataObject implements Serializable {
+public class User extends DataObject {
 
 	private static final long serialVersionUID = -4051007854697446181L;
-
-	/**
-	 * 主键ID。
-	 */
-	@Id
-	@GeneratedValue(generator = "clockSeq")
-	@GenericGenerator(name = "clockSeq", strategy = CoreConstants.ID_GENERATOR_CLASS)
-	private Long id;
-	
-	@Version
-	private Integer version;
 
 	/**
 	 * UID. Unique.
@@ -67,6 +45,7 @@ public class User extends DataObject implements Serializable {
 	@Column(name = "last_name", length = CoreConstants.USER_FIRST_LAST_NAME_MAX_LENGTH)
 	private String lastName;
 
+	@Override
 	public Long getId() {
 		return id;
 	}
@@ -115,8 +94,11 @@ public class User extends DataObject implements Serializable {
 		this.lastName = lastName;
 	}
 
-	public User(Long id, String username, String password) {
-		this.id = id;
+	public User() {
+
+	}
+
+	public User(String username, String password) {
 		this.username = username;
 		this.password = password;
 	}
