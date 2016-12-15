@@ -6,32 +6,28 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.SerializationException;
 
 import com.andre.core.CoreConstants;
-import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
 public class GsonRedisSerializer<T> implements RedisSerializer<T> {
 
-	/**
-	 * 具体泛型类型。
-	 */
-	@SuppressWarnings("serial")
-	private final Type type = new TypeToken<T>(this.getClass()) {
-	}.getType();
+	private final Type dataType;
 
 	private final Gson gson;
 
-	public GsonRedisSerializer() {
-		gson = new Gson();
+	public GsonRedisSerializer(Type dataType) {
+		this.dataType = dataType;
+		this.gson = new Gson();
 	}
 
-	public GsonRedisSerializer(Gson gson) {
+	public GsonRedisSerializer(Type dataType, Gson gson) {
+		this.dataType = dataType;
 		this.gson = gson;
 	}
 
 	@Override
 	public byte[] serialize(T t) throws SerializationException {
 		if (t != null) {
-			String json = gson.toJson(t, type);
+			String json = gson.toJson(t, t.getClass());
 			return json.getBytes(CoreConstants.CHARSET_UTF_8);
 		}
 		return null;
@@ -41,7 +37,7 @@ public class GsonRedisSerializer<T> implements RedisSerializer<T> {
 	public T deserialize(byte[] bytes) throws SerializationException {
 		if (bytes != null) {
 			String json = new String(bytes, CoreConstants.CHARSET_UTF_8);
-			return gson.fromJson(json, type);
+			return gson.fromJson(json, dataType);
 		}
 		return null;
 	}

@@ -37,6 +37,16 @@ public abstract class DataObject extends BaseObject {
 		return defaultID;
 	}
 
+	public String getRedisKey() {
+		String simpleClassName = this.getClass().getSimpleName();
+		return simpleClassName + "::" + getId();
+	}
+
+	public Long getIdByRedisKey(String key) {
+		int idx = key.indexOf("::");
+		return idx == -1 ? null : Long.parseLong(key.substring(idx + 2));
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) {
