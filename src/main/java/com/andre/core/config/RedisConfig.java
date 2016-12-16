@@ -22,6 +22,9 @@ public class RedisConfig {
 	public RedisTemplate<String, ?> redisTemplate() {
 		RedisTemplate<String, ?> template = new RedisTemplate<>();
 		template.setConnectionFactory(jedisConnectionFactory());
+		// 开启@Transactional注解支持。
+		template.setEnableTransactionSupport(true);
+		// Key Serializer一律采用String。
 		template.setKeySerializer(new StringRedisSerializer(CoreConstants.CHARSET_UTF_8));
 		template.setHashKeySerializer(new StringRedisSerializer(CoreConstants.CHARSET_UTF_8));
 		return template;

@@ -18,12 +18,12 @@ public abstract class GenericRedisDaoImpl<T extends DataObject> implements Gener
 	private RedisTemplate<String, T> redisTemplate;
 
 	@Override
-	public void saveData(T data) {
+	public void save(T data) {
 		redisTemplate.opsForValue().set(data.getRedisKey(), data);
 	}
 
 	@Override
-	public T findData(String key) {
+	public T find(String key) {
 		return redisTemplate.opsForValue().get(key);
 	}
 

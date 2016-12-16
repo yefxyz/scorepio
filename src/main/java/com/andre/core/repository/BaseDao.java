@@ -1,26 +1,27 @@
 package com.andre.core.repository;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.stereotype.Repository;
+import com.andre.core.model.DataObject;
 
-@Repository
-public class BaseDao {
+/**
+ * 基本数据服务接口。
+ * 
+ * @author Andre
+ */
+public interface BaseDao {
 
-	private static ApplicationContext ctx;
+	/**
+	 * 保存数据对象。
+	 * 
+	 * @param data
+	 */
+	public <T extends DataObject> void save(T data);
 
-	@Autowired
-	public void setCtx(ApplicationContext ctx) {
-		BaseDao.ctx = ctx;
-	}
-
-	public static <T> T test(T data) {
-		String prefix = data.getClass().getSimpleName().toLowerCase();
-		String redisDaoName = prefix + "RedisDao";
-		GenericRedisDao redisDao = (GenericRedisDao) ctx.getBean(redisDaoName);
-
-		System.out.println(redisDao.getClass().getName());
-		return null;
-	}
+	/**
+	 * 查找获取数据对象。
+	 * 
+	 * @param key
+	 * @return
+	 */
+	public <T extends DataObject> T find(String key);
 
 }

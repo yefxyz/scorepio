@@ -22,25 +22,38 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 repositories {
+	// 阿里云Maven库镜像。
 	maven { url "http://maven.aliyun.com/nexus/content/groups/public" }
 	mavenCentral()
 }
 
-
 dependencies {
-	compile("org.springframework.boot:spring-boot-starter-web")
-	compileOnly("org.springframework.boot:spring-boot-starter-tomcat")
+	compile("org.springframework.boot:spring-boot-starter-web") {
+		// 排除Tomcat。
+		exclude module: "spring-boot-starter-tomcat"
+		// 排除默认log库。
+		exclude module: "spring-boot-starter-logging"
+	}
+	// 加入log4j支持。
+	compile("org.springframework.boot:spring-boot-starter-log4j2")
+	// AOP.	
 	compile("org.springframework.boot:spring-boot-starter-aop")
-	compile("org.springframework.boot:spring-boot-starter-data-jpa")
 	
+	// Netty.
 	compile("io.netty:netty-all:4.1.6.Final")
 	
+	// 数据层。
+	compile("org.springframework.boot:spring-boot-starter-data-jpa")
 	compile("mysql:mysql-connector-java:6.0.5")
 	compile("org.springframework.data:spring-data-redis:1.7.5.RELEASE")
 	compile("redis.clients:jedis:2.9.0")
 	
+	// Google.
 	compile("com.google.code.gson:gson:2.8.0")
 	compile("com.google.guava:guava:20.0")
 	
-	testCompile("org.springframework.boot:spring-boot-starter-test")
+	// Unit Test.
+	testCompile("org.springframework.boot:spring-boot-starter-test") {
+		exclude module: "spring-boot-starter-logging"
+	}
 }

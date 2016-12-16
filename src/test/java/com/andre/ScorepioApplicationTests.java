@@ -1,5 +1,7 @@
 package com.andre;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,13 +10,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.andre.core.model.User;
-import com.andre.core.repository.BaseDao;
 import com.andre.core.repository.GenericRedisDao;
 import com.andre.core.repository.jpa.UserRepository;
+import com.andre.core.util.IdUtil;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ScorepioApplicationTests {
+
+	protected Logger logger = LogManager.getLogger(getClass());
 
 	@Autowired
 	private GenericRedisDao<User> userRedisDao;
@@ -27,8 +31,11 @@ public class ScorepioApplicationTests {
 	}
 
 	@Test
+	// @Transactional
+	// @Rollback(value = false)
 	public void testRedis() {
 		User user01 = new User("test01", "123456");
+		user01.setId(IdUtil.nextID());
 		user01.setFirstName("Andre");
 		user01.setLastName("Ye");
 		// redisUserTemplate.opsForValue().set(user01.getUsername(), user01);
@@ -37,13 +44,18 @@ public class ScorepioApplicationTests {
 		// redisBaseObjectTemplate.opsForValue().set(user01.getUsername(), user01);
 		// System.out.println(redisBaseObjectTemplate.opsForValue().get(user01.getUsername()));
 
-		userRedisDao.saveData(user01);
-		User user02 = userRedisDao.findData("test01");
+		userRedisDao.save(user01);
+		// 若开启事务，这一条是查询不到的。
+		User user02 = userRedisDao.find(user01.getRedisKey());
 
-		System.out.println("un: " + user02.getUsername() + " pwd: " + user02.getPassword());
+		if (user02 != null) {
+			logger.info("un: " + user02.getUsername() + " pwd: " + user02.getPassword());
 
-		System.out.println("class name: " + user02.getClass().getName());
-		System.out.println("class simple name: " + user02.getClass().getSimpleName());
+			System.out.println("class name: " + user02.getClass().getName());
+			System.out.println("class simple name: " + user02.getClass().getSimpleName());
+		} else {
+			System.out.println("Can not find data.");
+		}
 	}
 
 	// @Test
@@ -66,10 +78,10 @@ public class ScorepioApplicationTests {
 		Assert.assertEquals(user01.getPassword(), "654321");
 	}
 
-	@Test
-	public void testDao() {
+	// @Test
+	public void testBaseDao() {
 		User user01 = new User("test01", "123456");
-		BaseDao.test(user01);
+
 	}
 
 }
