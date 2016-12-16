@@ -1,4 +1,4 @@
-package com.andre;
+package com.andre.test;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;

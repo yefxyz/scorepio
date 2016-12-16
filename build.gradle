@@ -27,17 +27,20 @@ repositories {
 	mavenCentral()
 }
 
+configurations {
+	// 排除Tomcat。
+	compile.exclude module: "spring-boot-starter-tomcat"
+	// 排除默认logger。
+	compile.exclude module: "spring-boot-starter-logging"
+}
+
 dependencies {
-	compile("org.springframework.boot:spring-boot-starter-web") {
-		// 排除Tomcat。
-		exclude module: "spring-boot-starter-tomcat"
-		// 排除默认log库。
-		exclude module: "spring-boot-starter-logging"
-	}
-	// 加入log4j支持。
-	compile("org.springframework.boot:spring-boot-starter-log4j2")
+	// Web初始库。
+	compile("org.springframework.boot:spring-boot-starter-web")
 	// AOP.	
 	compile("org.springframework.boot:spring-boot-starter-aop")
+	// 加入log4j支持。
+	compile("org.springframework.boot:spring-boot-starter-log4j2")
 	
 	// Netty.
 	compile("io.netty:netty-all:4.1.6.Final")
@@ -52,8 +55,9 @@ dependencies {
 	compile("com.google.code.gson:gson:2.8.0")
 	compile("com.google.guava:guava:20.0")
 	
+	// Misc.
+	compile("javax.el:javax.el-api:3.0.0")
+	
 	// Unit Test.
-	testCompile("org.springframework.boot:spring-boot-starter-test") {
-		exclude module: "spring-boot-starter-logging"
-	}
+	testCompile("org.springframework.boot:spring-boot-starter-test")
 }
