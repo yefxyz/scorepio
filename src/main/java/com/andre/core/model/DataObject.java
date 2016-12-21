@@ -42,7 +42,7 @@ public abstract class DataObject extends BaseObject {
 		return simpleClassName + "::" + getId();
 	}
 
-	public Long getIdByRedisKey(String key) {
+	public static Long getIdByRedisKey(String key) {
 		int idx = key.indexOf("::");
 		return idx == -1 ? null : Long.parseLong(key.substring(idx + 2));
 	}

@@ -8,4 +8,7 @@ public interface GenericRedisDao<T extends DataObject> {
 
 	T find(String key);
 
+	boolean hasKey(String key);
+	
+	void delete(String key);
 }

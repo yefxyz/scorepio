@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.andre.core.model.User;
+import com.andre.core.repository.BaseDao;
 import com.andre.core.repository.GenericRedisDao;
 import com.andre.core.repository.jpa.UserRepository;
 import com.andre.core.util.IdUtil;
@@ -26,11 +27,14 @@ public class ScorepioApplicationTests {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	private BaseDao cacheAsideBaseDao;
+
 	// @Test
 	public void contextLoads() {
 	}
 
-	@Test
+	// @Test
 	// @Transactional
 	// @Rollback(value = false)
 	public void testRedis() {
@@ -78,10 +82,14 @@ public class ScorepioApplicationTests {
 		Assert.assertEquals(user01.getPassword(), "654321");
 	}
 
-	// @Test
+	@Test
 	public void testBaseDao() {
-		User user01 = new User("test01", "123456");
-
+		User user01 = cacheAsideBaseDao.find(User.class, "User::1482323306885");
+		logger.info("un: " + user01.getUsername() + " pwd: " + user01.getPassword());
+		
+		// User user01 = cacheAsideBaseDao.find(User.class, "User::1481703540925");
+		// user01.setPassword("abc123");
+		// cacheAsideBaseDao.save(user01);
 	}
 
 }

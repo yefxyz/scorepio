@@ -35,4 +35,14 @@ public abstract class GenericRedisDaoImpl<T extends DataObject> implements Gener
 		redisTemplate.setHashValueSerializer(new GsonRedisSerializer<T>(typeToken.getType()));
 	}
 
+	@Override
+	public boolean hasKey(String key) {
+		return redisTemplate.hasKey(key);
+	}
+
+	@Override
+	public void delete(String key) {
+		redisTemplate.delete(key);
+	}
+
 }
