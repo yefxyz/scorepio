@@ -62,8 +62,10 @@ public class CacheAsideBaseDaoImpl implements BaseDao {
 
 			JpaRepository<T, Long> jpaRepository = getJPARepository(clazz);
 			T data = jpaRepository.findOne(DataObject.getIdByRedisKey(key));
-			// 写入缓存。
-			redisDao.save(data);
+			if (data != null) {
+				// 写入缓存。
+				redisDao.save(data);
+			}
 			return data;
 		} catch (Exception e) {
 			getLogger().error("Find data failed. Exception: " + e);

@@ -84,8 +84,10 @@ public class ScorepioApplicationTests {
 
 	@Test
 	public void testBaseDao() {
-		User user01 = cacheAsideBaseDao.find(User.class, "User::1482323306885");
-		logger.info("un: " + user01.getUsername() + " pwd: " + user01.getPassword());
+		User user01 = cacheAsideBaseDao.find(User.class, "User::1481703540925");
+		if (user01 != null) {
+			logger.info("un: " + user01.getUsername() + " pwd: " + user01.getPassword());
+		}
 		
 		// User user01 = cacheAsideBaseDao.find(User.class, "User::1481703540925");
 		// user01.setPassword("abc123");
